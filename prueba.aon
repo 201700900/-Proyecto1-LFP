@@ -1,0 +1,17 @@
+(
+    <
+        [precio] = 45.00,
+        [descripcion] = "adios mundo",
+        [disponible] = true
+    >,
+    <
+        [precio] = 60.00,
+        [descripcion] = "esto sirve",
+        [disponible] = false
+    >,
+    <
+        [precio] = 50.10,
+        [descripcion] = "hola a todos",
+        [disponible] = true
+    >    
+)
