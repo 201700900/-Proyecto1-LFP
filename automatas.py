@@ -625,7 +625,7 @@ def tkn_comando(nombre):
 def report_id(opcion):
     estado=0
     tmp=""
-    salida = ""
+    salida = []
     lista = list(opcion)
     lista.append(";")
     for x in lista:
@@ -657,6 +657,7 @@ def report_id(opcion):
         elif estado == 2:
             if x == ' ':
                 tokens.append(tkn_html(tmp))
+                salida.append(tmp)
                 tmp=''
                 estado=3
                 continue 
@@ -668,7 +669,7 @@ def report_id(opcion):
         elif estado == 3:
             if x==';':
                 tokens.append(tkn_comando(tmp))
-                salida=tmp
+                salida.append(tmp)
                 break
             
             tmp+=x

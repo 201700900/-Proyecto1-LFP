@@ -1,0 +1,11 @@
+CREATE SET nuevo;
+LOAD INTO nuevo FILES prueba.aon;        
+USE SET nuevo;
+SELECT *;
+LIST ATTRIBUTES;
+PRINT IN PINK
+MIN precio;
+MAX producto;
+SUM *;
+COUNT *;
+REPORT TOKENS;

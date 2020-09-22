@@ -3,10 +3,13 @@ from tabulate import tabulate
 import aon
 import createSet
 import automatas
-import math
+import webbrowser
+import pandas as pd
+import siql
 from colorama import Back, Fore, init
 init()
 
+L_Reporte=[]
 
 #BLUE, RED, GREEN, YELLOW, ORANGE y PINK
         
@@ -51,6 +54,8 @@ def Lista_Usando():
 
 def encontrar(opcion):
     global setEnUso
+    
+    
     
     #---------------------------1. CREATE SET < ID >
     if re.match(r"CREATE", opcion, re.IGNORECASE) and automatas.busca("SET", opcion): 
@@ -171,32 +176,34 @@ def encontrar(opcion):
     #--------------------------8. SUM < atributo > [, <atributo> ] +    
     elif re.match(r"SUM", opcion, re.IGNORECASE):
         sumas=automatas.sum_(opcion)
-        if sumas[0]=='*':
-            dic = (Lista_Usando())
-            d=dic[0]
+        try:
+            if sumas[0]=='*':
+                dic = (Lista_Usando())
+                d=dic[0]
+                
+                sumas=list(d.keys())
             
-            sumas=list(d.keys())
+            salida=[]
+            
+            for at in sumas:
+                resultado=0
+                try:
+                    for dic in Lista_Usando():
+                        
+                        valor = dic.get(at, "")
+                        
+                        if float(valor).as_integer_ratio():
+                            resultado = resultado + valor
+                except:
+                    pass
+                s=[{at:resultado}]
+                print(tabulate(s, headers="keys", tablefmt="fancy_grid"))
+                        
+                        
+    
         
-        salida=[]
-        #try:
-        for at in sumas:
-            resultado=0
-            try:
-                for dic in Lista_Usando():
-                    
-                    valor = dic.get(at, "")
-                    
-                    resultado = resultado + valor
-            except:
-                pass
-            salida.append({at:resultado})
-                        
-                        
-        print(tabulate(salida, headers="keys", tablefmt="fancy_grid"))
-        for d in salida:
-            print(d)        
-        #except:
-        #    print("error")
+        except:
+            print("error")
         
         
     #--------------------------9. COUNT < atributo > [, < atributo > ] +    
@@ -210,10 +217,50 @@ def encontrar(opcion):
         
         salida=[]
         for c in cuentas:
+            cuenta=0
             for dic in Lista_Usando():
+                if (c in dic):
+                    cuenta=cuenta+1
                 
-                print("número de registros cargados = " + str(len(data)))
-        pass      
+                            
+            print("número de registros cargados de", c, "= " + str(len(dic)))
+    #--------------------------12. REPORT TOKENS
+    elif re.match(r"REPORT", opcion, re.IGNORECASE) and automatas.busca("TOKENS", opcion):        
+        automatas.report_tkn(opcion)
+    
+    #--------------------------10. REPORT TO < id > < comando >   
+    elif re.match(r"REPORT", opcion, re.IGNORECASE) and automatas.busca("TO", opcion):
+        entra = automatas.report_id(opcion)
+        global L_Reporte
+        L_Reporte = []
+        encontrar(entra[1])
+        
+        
+        
+        df= pd.DataFrame(data=L_Reporte)
+        f = open ("header.txt",'r')
+        header = f.read()
+        f.close()
+                
+        tabla= df.to_html()
+        footer="""</div>
+        </body>
+        </html> """
+        html = header+tabla+footer
+        path = entra[0]+".html"
+        f=open(path,'wb')
+        f.write(bytes(html, 'utf-8'))
+        f.close()
+        webbrowser.open_new_tab(path)
+    #--------------------------11.SCRIPT < direccion > [, < direccion > ]
+    elif re.match(r"SCRIPT", opcion, re.IGNORECASE):
+        archivos = automatas.script(opcion)
+        for path in archivos:
+            comandos = siql.comandos(path)
+            for comando in comandos:
+                encontrar(comando)
+                
+                
     else:
         print("Not a Math!")
         
