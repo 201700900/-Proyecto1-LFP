@@ -54,17 +54,25 @@ def Lista_Usando():
 
 def encontrar(opcion):
     global setEnUso
+    global L_Reporte
     
     
     
     #---------------------------1. CREATE SET < ID >
     if re.match(r"CREATE", opcion, re.IGNORECASE) and automatas.busca("SET", opcion): 
-        automatas.create_Set(opcion)
+        set_nombre = automatas.create_Set(opcion)
+        nombres=[]
         lista = opcion.split()
-        nuevo = createSet.Paquete(lista[-1])
-        createSet.sets.append(nuevo)
-        for obj in createSet.sets:
-            print(obj.getnombre())
+        if set_nombre in createSet.nombres:
+            print(set_nombre,' ya fue creada')  
+        else:
+            nuevo = createSet.Paquete(set_nombre)
+            createSet.sets.append(nuevo)
+            L_Reporte=[['set',set_nombre]]
+        for n in createSet.nombres:
+            nombres.append([n])
+        print(tabulate(nombres, headers=['SETS'], showindex=True, tablefmt="fancy_grid" ))    
+        
 
     #***************************2. LOAD INTO < set_id > FILES < id > [ , <id> ] +    
     elif re.match(r"LOAD", opcion, re.IGNORECASE) and automatas.busca("INTO", opcion):
@@ -72,15 +80,16 @@ def encontrar(opcion):
             listaLoad=[]
             listaLoad = automatas.load(opcion)
             archivos = listaLoad[1]
-            for path in archivos:
-                diccionario = aon.afdAON(path)
-                for obj in createSet.sets:
-                    if obj.getnombre()==listaLoad[0]:
-                        obj.addElement(diccionario)
-                        print(tabulate(obj.getLista(), headers="keys", showindex=True, tablefmt="fancy_grid"))
-                        break
-                    else: 
-                        print("El set ",listaLoad[0]," no existe")
+            if listaLoad[0] in createSet.nombres:
+                for path in archivos:
+                    diccionario = aon.afdAON(path)
+                    for obj in createSet.sets:
+                        if obj.getnombre()==listaLoad[0]:
+                            obj.addElement(diccionario)
+                            print(tabulate(obj.getLista(), headers="keys", showindex=True, tablefmt="fancy_grid"))
+                            break
+            else: 
+                print("El set ",listaLoad[0]," no existe")
         except IndexError:
             print("error en la carga")            
             
@@ -124,9 +133,8 @@ def encontrar(opcion):
             dic = (Lista_Usando())
             d=dic[0]
             key=list(d.keys())
-            print(key)
-            print(type(key))
-            
+            print(tabulate(key, tablefmt="fancy_grid"))
+                    
         except:
             print("Error")    
 
@@ -196,8 +204,9 @@ def encontrar(opcion):
                             resultado = resultado + valor
                 except:
                     pass
-                s=[{at:resultado}]
-                print(tabulate(s, headers="keys", tablefmt="fancy_grid"))
+                salida.append=[at, resultado]
+            
+            print(tabulate(salida, tablefmt="fancy_grid"))
                         
                         
     
@@ -231,13 +240,12 @@ def encontrar(opcion):
     #--------------------------10. REPORT TO < id > < comando >   
     elif re.match(r"REPORT", opcion, re.IGNORECASE) and automatas.busca("TO", opcion):
         entra = automatas.report_id(opcion)
-        global L_Reporte
-        L_Reporte = []
+        
         encontrar(entra[1])
         
         
         
-        df= pd.DataFrame(data=L_Reporte)
+        df= pd.DataFrame(data = L_Reporte)
         f = open ("header.txt",'r')
         header = f.read()
         f.close()
@@ -256,9 +264,15 @@ def encontrar(opcion):
     elif re.match(r"SCRIPT", opcion, re.IGNORECASE):
         archivos = automatas.script(opcion)
         for path in archivos:
-            comandos = siql.comandos(path)
-            for comando in comandos:
-                encontrar(comando)
+            comandos = siql.script(path)
+            try:
+                for comando in comandos:
+                    print("*********************************")
+                    c=comando.rstrip('\n')
+                    print(c)
+                    encontrar(c)
+            except:
+                pass        
                 
                 
     else:

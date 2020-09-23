@@ -5,15 +5,15 @@ def script(path):
     
     if re.search(".siql", path):
         try: 
-            f = open (path,'r')
-            cadena = f.read()
+            f = open(path, "r")
+            comandos = f.readlines()
             f.close()
         except:
             print(path," no encontrado")
         
         
         
-        comandos.clear()
+        """comandos.clear()
         tmp=""
         lista = list(cadena)
         
@@ -25,7 +25,7 @@ def script(path):
                 continue
             
             tmp+=x
-            continue
+            continue"""
         
         return comandos
             

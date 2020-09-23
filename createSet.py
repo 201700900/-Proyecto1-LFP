@@ -1,9 +1,11 @@
 sets = []
+nombres=[]
 
 class Paquete():
     
     def __init__(self, nombre):
         print ("**set",nombre,"creado**")
+        nombres.append(nombre)
         self.nombre = nombre
         self.lista = []
     

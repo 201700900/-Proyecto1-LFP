@@ -50,6 +50,7 @@ def create_Set(opcion):
         elif estado == 2:
             if x==';':
                 tokens.append(tkn_name_SET(tmp))
+                return tmp
                 break
             if x !=' ':
                 tmp+=x

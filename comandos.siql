@@ -1,11 +1,20 @@
 CREATE SET nuevo;
-LOAD INTO nuevo FILES prueba.aon;        
+PRINT IN blue;
+LOAD INTO nuevo FILES prueba.aon;
+PRINT IN PINK;        
 USE SET nuevo;
+PRINT IN red;
 SELECT *;
+PRINT IN green;
 LIST ATTRIBUTES;
-PRINT IN PINK
+
+PRINT IN orange;
 MIN precio;
+PRINT IN blue;
 MAX producto;
+PRINT IN pink;
 SUM *;
+PRINT IN yellow;
 COUNT *;
-REPORT TOKENS;
+PRINT IN PINK;
+REPORT green;
