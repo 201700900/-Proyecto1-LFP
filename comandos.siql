@@ -17,4 +17,4 @@ SUM *;
 PRINT IN yellow;
 COUNT *;
 PRINT IN PINK;
-REPORT green;
+REPORT TOKENS;

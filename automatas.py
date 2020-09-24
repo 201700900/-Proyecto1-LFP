@@ -1,8 +1,21 @@
 import re
 from tabulate import tabulate
 import webbrowser
+import createSet
 import pandas as pd 
 
+setEnUso=""
+def Lista_Usando():
+    if setEnUso!="":
+        for obj in createSet.sets:
+            if obj.getnombre()==setEnUso:
+                return obj.getLista()
+                break
+            else:
+                print("SET ",setEnUso," no encontrado")
+            break        
+    else:
+        print("seleccione el SET a usar")
 
 tokens = []
 def busca(palabra, opcion):
@@ -50,7 +63,7 @@ def create_Set(opcion):
         elif estado == 2:
             if x==';':
                 tokens.append(tkn_name_SET(tmp))
-                return tmp
+                return tmp.lower()
                 break
             if x !=' ':
                 tmp+=x
@@ -62,8 +75,6 @@ tkn_load = {"token":"LOAD", "lexema":"LOAD", "descripcion":"Comando que carga el
 tkn_into = {"token":"INTO", "lexema":"INTO", "descripcion":"Palabra reservada que indica en qué set en memoria se ingresa los elementos a cargar."}
 tkn_files = {"token":"FILES", "lexema":"FILES", "descripcion":"Palabra reservada que indica los archivos que se van a cargar a memoria."}
 tkn_coma = {"token":"coma", "lexema":",", "descripcion":"signo que indica la separación de dos nombres de archivos o atributos."}
-def tkn_name_Set(nombre):
-    return {"token":"set", "lexema": nombre, "descripcion":"Palabra no reservada que indica el nombre del set en que se quiere cargar los nuevos elementos."} 
 def tkn_name_Archivo(nombre):
     return {"token":"ARCHIVO AON", "lexema": nombre, "descripcion":"Nombre de archivo de tipo .AON."} 
 
@@ -104,9 +115,9 @@ def load(opcion):
         elif estado == 2:
             if busca("FILES", tmp):
                 lista = tmp.split()
-                tokens.append(tkn_name_Set(lista[0]))
+                tokens.append(tkn_name_SET(lista[0]))
                 tokens.append(tkn_files)
-                salida.append(lista[0])
+                salida.append(lista[0].lower())
                 tmp=""
                 estado=3 
                 continue
@@ -171,6 +182,17 @@ def use_Set(opcion):
         elif estado == 2:
             if x==';':
                 tokens.append(tkn_name_SET(tmp))
+                if len(createSet.sets)==0:
+                    print("Ningun set creado aún")
+            
+                
+                    
+                if tmp.lower() not in createSet.nombres:
+                    setEnUso = tmp.lower()
+                    print("**usando set ",tmp,"**")
+                        
+                else:
+                    print("set",tmp, "no creado aún") 
                 return tmp
                 break
             if x !=' ':
@@ -227,6 +249,14 @@ def select(opcion):
             if x == '*':
                 tokens.append(tkn_asterisco)
                 estado=2
+                
+                if lista[index+1]==';':
+                    try:
+                        print(tabulate(Lista_Usando(), headers="keys", showindex=True, tablefmt="fancy_grid"))  # imprime todos        
+                    except:
+                        print("ERROR")
+                    break
+                    
                 continue
             
             if x == ' ':
@@ -511,7 +541,7 @@ def min_max(opcion):
         elif estado == 1:
             if x == ';':
                 tokens.append(tkn_campo(tmp))
-                salida.append(tmp)
+                salida.append(tmp.lower())
                 return salida
                 break 
             
@@ -551,13 +581,13 @@ def sum_(opcion):
             
             if x == ';':
                 tokens.append(tkn_campo(tmp))
-                campos.append(tmp)
+                campos.append(tmp.lower())
                 return campos
                 break
             
             if x == ',':
                 tokens.append(tkn_campo(tmp))
-                campos.append(tmp)
+                campos.append(tmp.lower())
                 tmp=''
                 estado=1
                 continue  
@@ -598,13 +628,13 @@ def count(opcion):
             
             if x == ';':
                 tokens.append(tkn_campo(tmp))
-                campos.append(tmp)
+                campos.append(tmp.lower())
                 return campos
                 break
             
             if x == ',':
                 tokens.append(tkn_campo(tmp))
-                campos.append(tmp)
+                campos.append(tmp.lower())
                 tmp=''
                 estado=1
                 continue  
@@ -644,6 +674,28 @@ def report_id(opcion):
                 
             continue
         elif estado == 1:
+            if tmp.lower() == 'tokens':
+                tokens.append(tkn_tkns)
+                
+                df= pd.DataFrame(data=tokens)
+                f = open ("header.txt",'r')
+                header = f.read()
+                f.close()
+        
+                tabla= df.to_html()
+                footer="""</div>
+                </body>
+                </html> """
+                html = header+tabla+footer
+                f=open('reporte_tokens.html','wb')
+                f.write(bytes(html, 'utf-8'))
+                f.close()
+                webbrowser.open_new_tab("reporte_tokens.html")
+                salida.append(tmp)
+                break
+                
+                continue 
+            
             if x == ' ':
                 tokens.append(tkn_to)
                 tmp=''
@@ -657,7 +709,7 @@ def report_id(opcion):
             continue
         elif estado == 2:
             if x == ' ':
-                tokens.append(tkn_html(tmp))
+                tokens.append(tkn_html(tmp+'.html'))
                 salida.append(tmp)
                 tmp=''
                 estado=3

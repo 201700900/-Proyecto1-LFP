@@ -11,22 +11,6 @@ def script(path):
         except:
             print(path," no encontrado")
         
-        
-        
-        """comandos.clear()
-        tmp=""
-        lista = list(cadena)
-        
-        for x in lista:
-            if x ==';':
-                #comandos.encontrar(tmp)
-                comandos.append(tmp)
-                tmp=""
-                continue
-            
-            tmp+=x
-            continue"""
-        
         return comandos
             
     else:
