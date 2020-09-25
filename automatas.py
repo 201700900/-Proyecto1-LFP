@@ -2,20 +2,10 @@ import re
 from tabulate import tabulate
 import webbrowser
 import createSet
+import seleccionar
 import pandas as pd 
 
-setEnUso=""
-def Lista_Usando():
-    if setEnUso!="":
-        for obj in createSet.sets:
-            if obj.getnombre()==setEnUso:
-                return obj.getLista()
-                break
-            else:
-                print("SET ",setEnUso," no encontrado")
-            break        
-    else:
-        print("seleccione el SET a usar")
+
 
 tokens = []
 def busca(palabra, opcion):
@@ -113,19 +103,28 @@ def load(opcion):
                 
             continue
         elif estado == 2:
-            if busca("FILES", tmp):
-                lista = tmp.split()
-                tokens.append(tkn_name_SET(lista[0]))
-                tokens.append(tkn_files)
-                salida.append(lista[0].lower())
+            if x==' ':
+                tokens.append(tkn_name_SET(tmp))
+                salida.append(tmp.lower())
                 tmp=""
                 estado=3 
                 continue
+            
             
             tmp+=x
             estado=2
             continue
         elif estado == 3:
+            if tmp.lower() == 'files':
+                tokens.append(tkn_files)
+                tmp=""
+                estado=4 
+                continue
+            
+            if x!=' ':
+                tmp+=x
+                continue
+        elif estado == 4:
             if x==';':
                 tokens.append(tkn_name_Archivo(tmp))
                 archivos.append(tmp)
@@ -136,7 +135,7 @@ def load(opcion):
                 
                 archivos.append(tmp)
                 tmp=""
-                estado = 3
+                estado = 4
                 continue
             
             if x !=' ':
@@ -213,6 +212,9 @@ tkn_comillas={"token":"comillas", "lexema":'"', "descripcion": "indica el inicio
 tkn_and={"token":"conjunción", "lexema":"AND", "descripcion": "operador combinador de condiciones"}
 tkn_or={"token":"disyunción", "lexema":"OR", "descripcion": "operador combinador de condiciones"}
 tkn_xor={"token":"disyunción exclusiva", "lexema":"XOR", "descripcion": "operador combinador de condiciones"}
+tkn_regex={"token":"REGEX", "lexema":"REGEX", "descripcion": "recibe una expresión regular"}
+def tkn_ER(nombre):
+    return {"token":"REGEX", "lexema": nombre, "descripcion":"Expresión regular"} 
 def tkn_campo(nombre):
     return {"token":"campo", "lexema": nombre, "descripcion":"campo del registro"} 
 def tkn_BOOL(nombre):
@@ -248,13 +250,10 @@ def select(opcion):
             
             if x == '*':
                 tokens.append(tkn_asterisco)
-                estado=2
                 
                 if lista[index+1]==';':
-                    try:
-                        print(tabulate(Lista_Usando(), headers="keys", showindex=True, tablefmt="fancy_grid"))  # imprime todos        
-                    except:
-                        print("ERROR")
+                    salida.append('*')
+                    
                     break
                     
                 continue
@@ -289,27 +288,23 @@ def select(opcion):
             continue
         elif estado == 2:
             if x==';':
-                salida.append(condicion)
+                salida.append(condicion.copy())
                 break
             if x=='=' or x=='>' or x=='<' or x=='!':
                 condicion.clear()
                 tokens.append(tkn_campo(tmp))
                 condicion.append(tmp)
                 tmp = x
-                estado = 3
+                estado = 4
                 continue
-            
-            if tmp.lower()=="or":
-                tokens.append(tkn_or)
-                tmp=""
-                continue
-            elif tmp.lower()=="and":
-                tokens.append(tkn_and)
-                tmp=""
-                continue
-            elif tmp.lower()=="xor":
-                tokens.append(tkn_xor)
-                tmp=""
+                                    
+                        
+            if x==' ':
+                condicion.clear()
+                tokens.append(tkn_campo(tmp))
+                condicion.append(tmp)
+                tmp = ""
+                estado = 4
                 continue
             
             if x!=' ':
@@ -320,47 +315,74 @@ def select(opcion):
             
             continue
         elif estado == 3:
+            if x == ' ':
+                if tmp.lower()=="or":
+                    tokens.append(tkn_or)
+                    seleccionar.OR=True
+                    tmp=""
+                    estado=2
+                    continue
+                elif tmp.lower()=="and":
+                    tokens.append(tkn_and)
+                    tmp=""
+                    seleccionar.AND=True
+                    estado=2
+                    continue
+                elif tmp.lower()=="xor":
+                    tokens.append(tkn_xor)
+                    tmp=""
+                    seleccionar.XOR=True
+                    estado=2
+                    continue
+            tmp +=x
+            continue    
+        elif estado == 4:
             if tmp=='<' and x != '=':
                 tokens.append(tkn_m)
                 tmp = x
-                estado=4
+                estado=5
                 continue
             elif tmp=='>' and x != '=':
                 tokens.append(tkn_M)
                 condicion.append(tmp)
                 tmp = x
-                estado=4
+                estado=5
                 continue
             
             if tmp=='<=':
                 tokens.append(tkn_m_igual)
                 condicion.append(tmp)
                 tmp = x
-                estado=4
+                estado=5
                 continue
             elif tmp == '>=':
                 tokens.append(tkn_M_igual)
                 condicion.append(tmp)
                 tmp = x
-                estado=4
+                estado=5
                 continue
             elif tmp == '!=':
                 tokens.append(tkn_diferente)
                 condicion.append(tmp)
                 tmp = x
-                estado=4
+                estado=5
                 continue
             elif tmp == '=':
                 tokens.append(tkn_igual)
                 condicion.append(tmp)
                 tmp = x
-                estado=4
+                estado=5
                 continue
+            elif tmp.lower()=='regex':
+                tokens.append(tkn_regex)
+                condicion.append("regex")
+                tmp=""
+                estado = 7
             
             if x!=' ':
                 tmp+=x
                 continue
-        elif estado == 4:
+        elif estado == 5:
             if x==';':
                 if re.search("true", tmp.strip().lower()):
                     tmp=tmp.replace(' ', '')
@@ -376,7 +398,7 @@ def select(opcion):
                     tokens.append(tkn_INT(tmp))
                     condicion.append(float(tmp))
                     
-                salida.append(condicion)    
+                salida.append(condicion.copy())    
                 break
             
             if x == ' ':
@@ -394,35 +416,48 @@ def select(opcion):
                     tmp=tmp.replace(' ', '')
                     tokens.append(tkn_INT(tmp))
                     condicion.append(float(tmp))
+                    
+                salida.append(condicion.copy())    
                 tmp=""    
-                estado = 2    
+                estado = 3    
                 continue
                 
             if x == '"':
                 tokens.append(tkn_comillas)
-                estado = 5
+                estado = 6
                 continue
-            elif tmp=='"':
-                tokens.append(tkn_comillas)
-                tmp=x
-                estado = 5
-                continue
+            
                 
             if x!=' ':
                 tmp+=x
                 continue
-        elif estado == 5:
+        elif estado == 6:
             if x == '"':
                 tokens.append(tkn_STR(tmp))
                 tokens.append(tkn_comillas)
                 condicion.append(tmp)
+                salida.append(condicion.copy())
                 tmp = ""
-                estado=2
+                estado=3
             else:
                 tmp += x
                 estado = 5    
             
             continue
+        elif estado == 7:
+            if x==']':
+                tmp+=x
+                tokens.append(tkn_ER(tmp))
+                condicion.append(tmp)
+                salida.append(condicion.copy())
+                tmp=""
+                estado=3
+                continue
+            
+            tmp+=x
+            continue
+                
+                
     return salida
             
 tkn_list={"token":"LIST", "lexema":"LIST", "descripcion": "Crea una lista"}
@@ -824,7 +859,7 @@ def report_tkn(opcion):
 #create_Set("CREATE SET nuevo")
 #print(load("LOAD INTO nuevo FILES ejemplo.aon"))        
 #print(use_Set("USE SET nuevo"))
-#print(select(' SELECT este, otro, aquel WHERE aquello>56 and palabra!="nada" '))
+print(select(' SELECT * WHERE aquello>56 and palabra regex [(a|b|c|d)]" '))
 #list_Atrubutes("LIST ATTRIBUTES")
 #print(print_in("PRINT IN BLACK"))
 #print(min_max("MIN zapatos"))
@@ -835,4 +870,4 @@ def report_tkn(opcion):
 #report_tkn("REPORT TOKENS")
 
 
-#print(tabulate(tokens, headers="keys", showindex=True, tablefmt="fancy_grid"))
+print(tabulate(tokens, headers="keys", showindex=True, tablefmt="fancy_grid"))

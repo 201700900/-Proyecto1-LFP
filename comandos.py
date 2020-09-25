@@ -2,6 +2,7 @@ from tabulate import tabulate
 import aon
 import createSet
 import automatas
+import seleccionar
 import webbrowser
 import pandas as pd
 import siql
@@ -107,8 +108,19 @@ def encontrar(opcion):
                     print("set",tmp, "no creado aún")     
                 break
             #--------------------------4. SELECT < atributo > [ , <atributo>] + [ WHERE < condiciones > ]
-            elif tmp.lower()=='select': 
-                automatas.select(opcion)   
+            elif tmp.lower()=='select':
+                s=[] 
+                s=automatas.select(opcion)
+                if s[0]=='*':
+                    try:
+                        print(tabulate(Lista_Usando(), headers="keys", showindex=True, tablefmt="fancy_grid"))  # imprime todos 
+                        L_Reporte = Lista_Usando().copy()
+                    except:
+                        print("ERROR")
+                else:
+                    imprimir = seleccionar.array(Lista_Usando(),s[0],s[1])
+                    L_Reporte = imprimir.copy()
+                    print(tabulate(imprimir, headers="keys", showindex=True, tablefmt="fancy_grid"))
                 
                 break    
             #--------------------------5. LIST ATTRIBUTES
