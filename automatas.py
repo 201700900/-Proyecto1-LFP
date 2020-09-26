@@ -181,17 +181,6 @@ def use_Set(opcion):
         elif estado == 2:
             if x==';':
                 tokens.append(tkn_name_SET(tmp))
-                if len(createSet.sets)==0:
-                    print("Ningun set creado aún")
-            
-                
-                    
-                if tmp.lower() not in createSet.nombres:
-                    setEnUso = tmp.lower()
-                    print("**usando set ",tmp,"**")
-                        
-                else:
-                    print("set",tmp, "no creado aún") 
                 return tmp
                 break
             if x !=' ':
@@ -229,6 +218,7 @@ def select(opcion):
     condicion=[]
     salida = []
     atributos=[]
+    contenedor=[]
     
     lista = list(opcion)
     lista.append(";")
@@ -287,9 +277,7 @@ def select(opcion):
                 
             continue
         elif estado == 2:
-            if x==';':
-                salida.append(condicion.copy())
-                break
+            
             if x=='=' or x=='>' or x=='<' or x=='!':
                 condicion.clear()
                 tokens.append(tkn_campo(tmp))
@@ -315,36 +303,50 @@ def select(opcion):
             
             continue
         elif estado == 3:
-            if x == ' ':
-                if tmp.lower()=="or":
-                    tokens.append(tkn_or)
-                    seleccionar.OR=True
-                    tmp=""
-                    estado=2
-                    continue
-                elif tmp.lower()=="and":
-                    tokens.append(tkn_and)
-                    tmp=""
-                    seleccionar.AND=True
-                    estado=2
-                    continue
-                elif tmp.lower()=="xor":
-                    tokens.append(tkn_xor)
-                    tmp=""
-                    seleccionar.XOR=True
-                    estado=2
-                    continue
-            tmp +=x
-            continue    
+            if x==';':
+                salida.append(contenedor.copy())
+                break
+            
+            
+            if tmp.lower()=="or":
+                tokens.append(tkn_or)
+                seleccionar.OR=True
+                tmp=""
+                estado=2
+                continue
+            elif tmp.lower()=="and":
+                tokens.append(tkn_and)
+                tmp=""
+                seleccionar.AND=True
+                estado=2
+                continue
+            elif tmp.lower()=="xor":
+                tokens.append(tkn_xor)
+                tmp=""
+                seleccionar.XOR=True
+                estado=2
+                continue
+            
+            if x != ' ':
+                tmp +=x
+                continue    
         elif estado == 4:
             if tmp=='<' and x != '=':
                 tokens.append(tkn_m)
+                if x=='"':
+                    tmp=''
+                    estado = 6
+                    continue
                 tmp = x
                 estado=5
                 continue
             elif tmp=='>' and x != '=':
                 tokens.append(tkn_M)
                 condicion.append(tmp)
+                if x=='"':
+                    tmp=''
+                    estado = 6
+                    continue
                 tmp = x
                 estado=5
                 continue
@@ -352,24 +354,41 @@ def select(opcion):
             if tmp=='<=':
                 tokens.append(tkn_m_igual)
                 condicion.append(tmp)
+                if x=='"':
+                    tmp=''
+                    estado = 6
+                    continue
                 tmp = x
                 estado=5
                 continue
             elif tmp == '>=':
                 tokens.append(tkn_M_igual)
                 condicion.append(tmp)
+                if x=='"':
+                    tmp=''
+                    estado = 6
+                    continue
                 tmp = x
                 estado=5
                 continue
             elif tmp == '!=':
                 tokens.append(tkn_diferente)
                 condicion.append(tmp)
+                if x=='"':
+                    tmp=''
+                    estado = 6
+                    continue
                 tmp = x
                 estado=5
                 continue
             elif tmp == '=':
                 tokens.append(tkn_igual)
                 condicion.append(tmp)
+                if x=='"':
+                    tmp=''
+                    estado = 6
+                    continue
+                
                 tmp = x
                 estado=5
                 continue
@@ -397,8 +416,8 @@ def select(opcion):
                     tmp=tmp.replace(' ', '')
                     tokens.append(tkn_INT(tmp))
                     condicion.append(float(tmp))
-                    
-                salida.append(condicion.copy())    
+                contenedor.append(condicion.copy())
+                salida.append(contenedor.copy())    
                 break
             
             if x == ' ':
@@ -417,7 +436,7 @@ def select(opcion):
                     tokens.append(tkn_INT(tmp))
                     condicion.append(float(tmp))
                     
-                salida.append(condicion.copy())    
+                contenedor.append(condicion.copy())    
                 tmp=""    
                 estado = 3    
                 continue
@@ -436,12 +455,12 @@ def select(opcion):
                 tokens.append(tkn_STR(tmp))
                 tokens.append(tkn_comillas)
                 condicion.append(tmp)
-                salida.append(condicion.copy())
+                contenedor.append(condicion.copy())
                 tmp = ""
                 estado=3
             else:
                 tmp += x
-                estado = 5    
+                estado = 6    
             
             continue
         elif estado == 7:
@@ -449,7 +468,7 @@ def select(opcion):
                 tmp+=x
                 tokens.append(tkn_ER(tmp))
                 condicion.append(tmp)
-                salida.append(condicion.copy())
+                contenedor.append(condicion.copy())
                 tmp=""
                 estado=3
                 continue
@@ -859,7 +878,7 @@ def report_tkn(opcion):
 #create_Set("CREATE SET nuevo")
 #print(load("LOAD INTO nuevo FILES ejemplo.aon"))        
 #print(use_Set("USE SET nuevo"))
-print(select(' SELECT * WHERE aquello>56 and palabra regex [(a|b|c|d)]" '))
+print(select('SELECT * WHERE aquello > "esto" and palabra regex [(a|b|c|d)]'))
 #list_Atrubutes("LIST ATTRIBUTES")
 #print(print_in("PRINT IN BLACK"))
 #print(min_max("MIN zapatos"))

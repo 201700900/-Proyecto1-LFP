@@ -7,11 +7,10 @@ PRINT IN red;
 SELECT *;
 PRINT IN green;
 LIST ATTRIBUTES;
-
 PRINT IN orange;
-MIN precio;
+MIN promedio;
 PRINT IN blue;
-MAX producto;
+MAX nombre;
 PRINT IN pink;
 SUM *;
 PRINT IN yellow;

@@ -12,7 +12,7 @@ def array(ListaUsando,atributos,condiciones):
     global XOR 
     
     try:
-        procesar = ListaUsando
+        procesar = ListaUsando.copy()
         d=procesar[0]
         opuesto=[]
         
@@ -26,8 +26,11 @@ def array(ListaUsando,atributos,condiciones):
         
         copia = procesar.copy()
         for at in opuesto:
-            for dic in copia:
-                del(dic[at])
+            for x in copia:
+                try:
+                    x.pop(at)
+                except:
+                    pass    
                 
 
         
@@ -36,30 +39,32 @@ def array(ListaUsando,atributos,condiciones):
         doble=[]
         for condicion in condiciones:
             tmp.clear()
-            for index, dic in enumerate(procesar):
-            
-            
-                if condicion[1]=='=':
-                    if dic.get(condicion[0]) == condicion[2]:
-                        tmp.append(copia[index])
-                elif condicion[1]=='!=':
-                    if dic.get(condicion[0]) != condicion[2]:
-                        tmp.append(copia[index])
-                elif condicion[1]=='<=':
-                    if dic.get(condicion[0]) <= condicion[2]:
-                        tmp.append(copia[index])
-                elif condicion[1]=='>=':
-                    if dic.get(condicion[0]) >= condicion[2]:
-                        tmp.append(copia[index])               
-                elif condicion[1]=='<':
-                    if dic.get(condicion[0]) < condicion[2]:
-                        tmp.append(copia[index])
-                elif condicion[1]=='>':
-                    if dic.get(condicion[0]) > condicion[2]:
-                        tmp.append(copia[index])
-                elif condicion[1]=='regex':
-                    if re.match(condicion[2], dic.get(condicion[0])):
-                        tmp.append(copia[index])
+            for index, dic in enumerate(ListaUsando):
+                try:
+                
+                    if condicion[1]=='=':
+                        if dic.get(condicion[0]) == condicion[2]:
+                            tmp.append(copia[index])
+                    elif condicion[1]=='!=':
+                        if dic.get(condicion[0]) != condicion[2]:
+                            tmp.append(copia[index])
+                    elif condicion[1]=='<=':
+                        if dic.get(condicion[0]) <= condicion[2]:
+                            tmp.append(copia[index])
+                    elif condicion[1]=='>=':
+                        if dic.get(condicion[0]) >= condicion[2]:
+                            tmp.append(copia[index])               
+                    elif condicion[1]=='<':
+                        if dic.get(condicion[0]) < condicion[2]:
+                            tmp.append(copia[index])
+                    elif condicion[1]=='>':
+                        if dic.get(condicion[0]) > condicion[2]:
+                            tmp.append(copia[index])
+                    elif condicion[1]=='regex':
+                        if re.match(condicion[2], dic.get(condicion[0])):
+                            tmp.append(copia[index])
+                except:
+                    pass            
             #print(tabulate(tmp, headers="keys", showindex=True, tablefmt="fancy_grid"))    
 
             doble.append(tmp.copy())

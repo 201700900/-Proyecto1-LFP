@@ -44,7 +44,7 @@ def Lista_Usando():
                 return obj.getLista()
                 break
             else:
-                print("SET ",setEnUso," no encontrado")
+                print("SET",setEnUso,"no encontrado")
             break        
     else:
         print("seleccione el SET a usar")
@@ -100,28 +100,33 @@ def encontrar(opcion):
                 if len(createSet.sets)==0:
                     print("Ningun set creado aún")
             
-                if tmp.lower() not in createSet.nombres:
+                if seUsa.lower() in createSet.nombres:
                     setEnUso = seUsa.lower()
-                    print("**usando set ",tmp,"**")
+                    print("**usando set ",seUsa,"**")
+                    print(tabulate([["USANDO SET",seUsa]], tablefmt="fancy_grid"))
+                                    
+                    
                         
                 else:
-                    print("set",tmp, "no creado aún")     
+                    print("set",seUsa, "no creado aún")    
                 break
             #--------------------------4. SELECT < atributo > [ , <atributo>] + [ WHERE < condiciones > ]
             elif tmp.lower()=='select':
                 s=[] 
                 s=automatas.select(opcion)
-                if s[0]=='*':
-                    try:
-                        print(tabulate(Lista_Usando(), headers="keys", showindex=True, tablefmt="fancy_grid"))  # imprime todos 
-                        L_Reporte = Lista_Usando().copy()
-                    except:
-                        print("ERROR")
-                else:
-                    imprimir = seleccionar.array(Lista_Usando(),s[0],s[1])
-                    L_Reporte = imprimir.copy()
-                    print(tabulate(imprimir, headers="keys", showindex=True, tablefmt="fancy_grid"))
-                
+                try:
+                    if s[0]=='*':
+                        try:
+                            print(tabulate(Lista_Usando(), headers="keys", showindex=True, tablefmt="fancy_grid"))  # imprime todos 
+                            L_Reporte = Lista_Usando().copy()
+                        except:
+                            print("ERROR")
+                    else:
+                        imprimir = seleccionar.array(Lista_Usando(),s[0],s[1])
+                        L_Reporte = imprimir.copy()
+                        print(tabulate(imprimir, headers="keys", showindex=True, tablefmt="fancy_grid"))
+                except:
+                    print('ERROR EN EL SELECT')
                 break    
             #--------------------------5. LIST ATTRIBUTES
             elif tmp.lower()=='list':
@@ -170,15 +175,21 @@ def encontrar(opcion):
                 try:
                     for dic in Lista_Usando():
                         valor = dic.get(min_max[1], "")
-                        valores.append(valor)
+                        if valor != '':
+                            
+                            valores.append(valor)
                 
                     try:            
                         if min_max[0].lower()=='min':
-                            print("MIN DE",min_max[1],"=",min(valores))
+                            #print("MIN DE",min_max[1],"=",min(valores))
+                            mini=[[min_max[1],min(valores)]]
+                            print(tabulate(mini, headers=['CAMPO','MINIMO'], tablefmt="fancy_grid" ))
                         elif min_max[0].lower()=='max':
                             print("MAX DE",min_max[1],"=",max(valores))
+                            maxi=[[min_max[1],min(valores)]]
+                            print(tabulate(maxi, headers=['CAMPO','MAXIMO'], tablefmt="fancy_grid" ))
                     except:
-                        print(valor, "no encontrado")        
+                        print(min_max[1], "no encontrado")        
                 except:
                     print("error")
                 break
@@ -202,11 +213,14 @@ def encontrar(opcion):
                                 
                                 valor = dic.get(at, "")
                                 
-                                if float(valor).as_integer_ratio():
+                                if str(valor).lower() =='true'  or str(valor).lower() =='false' or str(valor).lower() ==''or str(valor).isalpha():
+                                    continue
+                                else:
                                     resultado = resultado + valor
                         except:
                             pass
-                        salida.append([at, resultado])
+                        if resultado > 0:
+                            salida.append([at, resultado])
                     
                     print(tabulate(salida, headers=['CAMPO', 'SUMA'], tablefmt="fancy_grid"))
                                 
@@ -233,7 +247,7 @@ def encontrar(opcion):
                         if (c in dic):
                             cuenta=cuenta+1
                         
-                    salida.append([c,len(dic)])                
+                    salida.append([c,cuenta])                
                     
                 
                 print(tabulate(salida, headers=['CAMPO', 'CUENTA'], tablefmt="fancy_grid"))
@@ -242,7 +256,7 @@ def encontrar(opcion):
             #--------------------------10. REPORT TO < id > < comando >  
             elif tmp.lower()=='report':        
                 entra = automatas.report_id(opcion)
-                if 'tokens' not in entra:
+                if 'TOKENS' not in entra:
                     try:
                         encontrar(entra[1])
                         
@@ -285,6 +299,7 @@ def encontrar(opcion):
                         
             else:
                 print("Not a Math!")
+                break
         
         tmp+=x
         continue

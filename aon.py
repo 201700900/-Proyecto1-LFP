@@ -122,12 +122,12 @@ def afdAON(path):
                     if re.search("true", tmp.strip().lower()):
                         tmp=tmp.replace(' ', '')
                         tokens.append(tmp.strip()+" - tkn_BOOLEAN")
-                        atributos.append(tmp)
+                        atributos.append(True)
                         
                     elif re.search("false", tmp.strip().lower()):
                         tmp=tmp.replace(' ', '')
                         tokens.append(tmp.strip()+" - tkn_BOOLEAN")
-                        atributos.append(tmp)
+                        atributos.append(False)
                     elif tipo == 1:
                         tmp=tmp.replace(' ', '')
                         tokens.append(tmp.strip()+" - tkn_INT")
@@ -153,9 +153,7 @@ def afdAON(path):
                         tmp=tmp.replace(' ', '')
                         tokens.append(tmp.strip()+" - tkn_INT")
                         atributos.append(float(tmp))
-                    else:
-                        tokens.append(tmp.strip()+" - tkn_STR")
-                        atributos.append(tmp)    
+                        
                     
                         
                     tmp = ""    

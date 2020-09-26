@@ -1,17 +1,374 @@
 (
-    <
-        [precio] = 45.00,
-        [descripcion] = "adios mundo",
-        [disponible] = true
-    >,
-    <
-        [precio] = 60.00,
-        [descripcion] = "esto sirve",
-        [disponible] = false
-    >,
-    <
-        [precio] = 50.10,
-        [descripcion] = "hola a todos",
-        [disponible] = true
-    >    
-)
+  <
+    [nombre] = "Jensen Todd",
+    [edad] = 32,
+    [activo] = true,
+    [promedio] = 34.2871
+  >,
+  <
+    [nombre] = "Stewart Powers",
+    [edad] = 33,
+    [activo] = false,
+    [promedio] = 23.1036
+  >,
+  <
+    [nombre] = "Sheppard Wilcox",
+    [edad] = 21,
+    [activo] = true,
+    [promedio] = 28.7064
+  >,
+  <
+    [nombre] = "Farley Sargent",
+    [edad] = 33,
+    [activo] = true,
+    [promedio] = 28.2483
+  >,
+  <
+    [nombre] = "Blanca Mcmahon",
+    [edad] = 25,
+    [activo] = true,
+    [promedio] = 30.1673
+  >,
+  <
+    [nombre] = "Rochelle Rojas",
+    [edad] = 40,
+    [activo] = true,
+    [promedio] = 21.2708
+  >,
+  <
+    [nombre] = "Mcdaniel Allen",
+    [edad] = 36,
+    [activo] = false,
+    [promedio] = 22.0193
+  >,
+  <
+    [nombre] = "Murphy Moses",
+    [edad] = 38,
+    [activo] = true,
+    [promedio] = 23.9056
+  >,
+  <
+    [nombre] = "Celia Trevino",
+    [edad] = 36,
+    [activo] = true,
+    [promedio] = 21.1752
+  >,
+  <
+    [nombre] = "Miranda Slater",
+    [edad] = 38,
+    [activo] = false,
+    [promedio] = 33.5504
+  >,
+  <
+    [nombre] = "Franklin Dennis",
+    [edad] = 35,
+    [activo] = true,
+    [promedio] = 34.3358
+  >,
+  <
+    [nombre] = "Kristine Bailey",
+    [edad] = 27,
+    [activo] = true,
+    [promedio] = 27.2872
+  >,
+  <
+    [nombre] = "Marjorie Ortega",
+    [edad] = 23,
+    [activo] = false,
+    [promedio] = 38.3169
+  >,
+  <
+    [nombre] = "Bailey Hardy",
+    [edad] = 35,
+    [activo] = true,
+    [promedio] = 20.3268
+  >,
+  <
+    [nombre] = "Kristy Walker",
+    [edad] = 27,
+    [activo] = true,
+    [promedio] = 26.2997
+  >,
+  <
+    [nombre] = "Rosalie Dunlap",
+    [edad] = 33,
+    [activo] = true,
+    [promedio] = 24.1783
+  >,
+  <
+    [nombre] = "Mccray Woodard",
+    [edad] = 40,
+    [activo] = false
+    
+  >,
+  <
+    [nombre] = "Justine Coleman",
+    [edad] = 40,
+    [activo] = true,
+    [promedio] = 35.1062
+  >,
+  <
+    [nombre] = "Jamie Mayer",
+    [edad] = 39,
+    [activo] = false
+   
+  >,
+  <
+    [nombre] = "Camacho Drake",
+    [edad] = 36,
+    [activo] = true,
+    [promedio] = 34.0403
+  >,
+  <
+    [nombre] = "Madden Wooten",
+    [edad] = 39,
+    [activo] = true,
+    [promedio] = 22.6641
+  >,
+  <
+    [nombre] = "Harper Burns",
+    [edad] = 24,
+    [activo] = true,
+    [promedio] = 26.5704
+  >,
+  <
+    [nombre] = "Dominguez Flynn",
+    [edad] = 29,
+    [activo] = false,
+    [promedio] = 22.8974
+  >,
+  <
+    [nombre] = "Castillo Stephenson",
+    [edad] = 27,
+    [activo] = true,
+    [promedio] = 31.1251
+  >,
+  <
+    [nombre] = "Cara Reilly",
+    [edad] = 24,
+    [activo] = true
+   
+  >,
+  <
+    [nombre] = "Stevenson Cochran",
+    [edad] = 21,
+    [activo] = true,
+    [promedio] = 33.7384
+  >,
+  <
+    [nombre] = "Colon Rivas",
+    [edad] = 37,
+    [activo] = true,
+    [promedio] = 32.4991
+  >,
+  <
+    [nombre] = "Miranda Diaz",
+    [edad] = 37,
+    [activo] = false,
+    [promedio] = 37.4393
+  >,
+  <
+    [nombre] = "Melva Pickett",
+    [edad] = 28,
+    [activo] = true,
+    [promedio] = 33.9473
+  >,
+  <
+    [nombre] = "Rosalyn Gomez",
+    [edad] = 34,
+    [activo] = false,
+    [promedio] = 27.846
+  >,
+  <
+    [nombre] = "Sanford Petty",
+    [edad] = 28,
+    [activo] = true,
+    [promedio] = 37.391
+  >,
+  <
+    [nombre] = "Dale King",
+    [edad] = 29,
+    [activo] = true,
+    [promedio] = 22.002
+  >,
+  <
+    [nombre] = "England Myers",
+    [edad] = 28,
+    [activo] = true,
+    [promedio] = 23.8621
+  >,
+  <
+    [nombre] = "Brandie Miles",
+    [edad] = 32,
+    [activo] = true,
+    [promedio] = 21.76
+  >,
+  <
+    [nombre] = "Cheryl Barnes",
+    [edad] = 20,
+    [activo] = false,
+    [promedio] = 39.5583
+  >,
+  <
+    [nombre] = "Ebony Reynolds",
+    [edad] = 20,
+    [activo] = true,
+    [promedio] = 31.2636
+  >,
+  <
+    [nombre] = "Gail Ramos",
+    [edad] = 37,
+    [activo] = true,
+    [promedio] = 30.301
+  >,
+  <
+    [nombre] = "Celina Poole",
+    [edad] = 40,
+    [activo] = true,
+    [promedio] = 21.8833
+  >,
+  <
+    [nombre] = "Ochoa Ayers",
+    [edad] = 29,
+    [activo] = false,
+    [promedio] = 37.4149
+  >,
+  <
+    [nombre] = "Clarissa Henry",
+    [edad] = 31,
+    [activo] = true,
+    [promedio] = 25.1326
+  >,
+  <
+    [nombre] = "Carmen Mullen",
+    [edad] = 25,
+    [activo] = true,
+    [promedio] = 21.682
+  >,
+  <
+    [nombre] = "Margarita Cabrera",
+    [edad] = 26,
+    [activo] = true,
+    [promedio] = 33.6388
+  >,
+  <
+    [nombre] = "Aisha Carrillo",
+    [edad] = 26,
+    [activo] = false,
+    [promedio] = 23.096
+  >,
+  <
+    [nombre] = "Acosta Mcpherson",
+    [edad] = 20,
+    [activo] = false,
+    [promedio] = 26.6169
+  >,
+  <
+    [nombre] = "Mccullough Guzman",
+    [edad] = 32,
+    [activo] = false,
+    [promedio] = 37.4721
+  >,
+  <
+    [nombre] = "Gallegos Gonzalez",
+    [edad] = 27,
+    [activo] = false,
+    [promedio] = 22.0869
+  >,
+  <
+    [nombre] = "Avila Bartlett",
+    [edad] = 24,
+    [activo] = true,
+    [promedio] = 30.2711
+  >,
+  <
+    [nombre] = "Duke Brady",
+    [edad] = 23,
+    [activo] = false,
+    [promedio] = 21.9048
+  >,
+  <
+    [nombre] = "Jeri Wallace",
+    [edad] = 40,
+    [activo] = false,
+    [promedio] = 32.0403
+  >,
+  <
+    [nombre] = "Lottie Weaver",
+    [edad] = 33,
+    [activo] = true,
+    [promedio] = 31.852
+  >,
+  <
+    [nombre] = "Joanna Franklin",
+    [edad] = 30,
+    [activo] = true,
+    [promedio] = 31.1361
+  >,
+  <
+    [nombre] = "Bryant Hester",
+    [edad] = 36,
+    [activo] = false,
+    [promedio] = 39.5357
+  >,
+  <
+    [nombre] = "Hanson Jones",
+    [edad] = 31,
+    [activo] = false,
+    [promedio] = 22.959
+  >,
+  <
+    [nombre] = "Madeleine Frazier",
+    [edad] = 40,
+    [activo] = true,
+    [promedio] = 34.3621
+  >,
+  <
+    [nombre] = "French Kline",
+    [edad] = 28,
+    [activo] = false,
+    [promedio] = 30.9886
+  >,
+  <
+    [nombre] = "Montoya Welch",
+    [edad] = 39,
+    [activo] = true,
+    [promedio] = 29.4975
+  >,
+  <
+    [nombre] = "Castro Gregory",
+    [edad] = 40,
+    [activo] = false,
+    [promedio] = 27.9643
+  >,
+  <
+    [nombre] = "Lavonne Kinney",
+    [edad] = 26,
+    [activo] = true,
+    [promedio] = 37.3096
+  >,
+  <
+    [nombre] = "Salazar York",
+    [edad] = 27,
+    [activo] = false,
+    [promedio] = 38.6532
+  >,
+  <
+    [nombre] = "Bates Dunn",
+    [edad] = 20,
+    [activo] = false,
+    [promedio] = 32.6534
+  >,
+  <
+    [nombre] = "Dorothy Gilmore",
+    [edad] = 29,
+    [activo] = false,
+    [promedio] = 22.173
+  >,
+  <
+    [nombre] = "Hodge Randolph",
+    [edad] = 25,
+    [activo] = false,
+    [promedio] = 33.9296
+  >
+]
