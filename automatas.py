@@ -1,4 +1,3 @@
-import re
 from tabulate import tabulate
 import webbrowser
 import createSet
@@ -8,11 +7,7 @@ import pandas as pd
 
 
 tokens = []
-def busca(palabra, opcion):
-    if re.search(palabra, opcion, re.IGNORECASE):
-        return True
-    else: 
-        return False
+
     
 tkn_create = {"token":"CREATE", "lexema":"CREATE", "descripcion":"Comando que crea nuevos elementos en memoria"}
 tkn_set = {"token":"SET", "lexema":"SET", "descripcion":"elemto en memoria donde se alojan ciertos conjuntos de datos cargados por el usuario."}
@@ -403,12 +398,12 @@ def select(opcion):
                 continue
         elif estado == 5:
             if x==';':
-                if re.search("true", tmp.strip().lower()):
+                if tmp.strip().lower() == 'true':
                     tmp=tmp.replace(' ', '')
                     tokens.append(tkn_BOOL(tmp))
                     condicion.append(True)
                         
-                elif re.search("false", tmp.strip().lower()):
+                elif tmp.strip().lower() == 'false':
                     tmp=tmp.replace(' ', '')
                     tokens.append(tkn_BOOL(tmp))
                     condicion.append(False)
@@ -421,12 +416,12 @@ def select(opcion):
                 break
             
             if x == ' ':
-                if re.search("true", tmp.strip().lower()):
+                if tmp.strip().lower() == 'true':
                     tmp=tmp.replace(' ', '')
                     tokens.append(tkn_BOOL(tmp))
                     condicion.append(True)
                         
-                elif re.search("false", tmp.strip().lower()):
+                elif tmp.strip().lower() == 'false':
                     tmp=tmp.replace(' ', '')
                     tokens.append(tkn_BOOL(tmp))
                     condicion.append(False)
@@ -878,7 +873,7 @@ def report_tkn(opcion):
 #create_Set("CREATE SET nuevo")
 #print(load("LOAD INTO nuevo FILES ejemplo.aon"))        
 #print(use_Set("USE SET nuevo"))
-print(select('SELECT * WHERE aquello > "esto" and palabra regex [(a|b|c|d)]'))
+#print(select('SELECT * WHERE aquello > "esto" and palabra regex [(a|b|c|d)]'))
 #list_Atrubutes("LIST ATTRIBUTES")
 #print(print_in("PRINT IN BLACK"))
 #print(min_max("MIN zapatos"))
@@ -889,4 +884,4 @@ print(select('SELECT * WHERE aquello > "esto" and palabra regex [(a|b|c|d)]'))
 #report_tkn("REPORT TOKENS")
 
 
-print(tabulate(tokens, headers="keys", showindex=True, tablefmt="fancy_grid"))
+#print(tabulate(tokens, headers="keys", showindex=True, tablefmt="fancy_grid"))

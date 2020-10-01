@@ -98,8 +98,8 @@
   <
     [nombre] = "Mccray Woodard",
     [edad] = 40,
-    [activo] = false
-    
+    [activo] = false,
+    [promedio] = 30.1324
   >,
   <
     [nombre] = "Justine Coleman",
@@ -110,8 +110,8 @@
   <
     [nombre] = "Jamie Mayer",
     [edad] = 39,
-    [activo] = false
-   
+    [activo] = false,
+    [promedio] = 23.2398
   >,
   <
     [nombre] = "Camacho Drake",
@@ -146,8 +146,8 @@
   <
     [nombre] = "Cara Reilly",
     [edad] = 24,
-    [activo] = true
-   
+    [activo] = true,
+    [promedio] = 38.2006
   >,
   <
     [nombre] = "Stevenson Cochran",
@@ -371,4 +371,4 @@
     [activo] = false,
     [promedio] = 33.9296
   >
-]
+)

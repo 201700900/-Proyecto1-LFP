@@ -31,8 +31,8 @@ def entrada():
 
     
 def titulo(linea):
-    t='<div style="padding-top: 80px"><div><p style="font-size: 2.4em; color: #1bbc9b; margin: 0px" class="bold">', linea, '</p></div></div>'        
-    return 
+    t='<div style="padding-top: 80px"><div><p style="font-size: 2.4em; color: #1bbc9b; margin: 0px" class="bold"> '+ linea + ' </p></div></div>'        
+    return str(t)
 
     
 
@@ -140,7 +140,7 @@ def encontrar(opcion):
                         keys.append([key])
 
                     print(tabulate(keys, tablefmt="fancy_grid"))
-                            
+                    L_Reporte = keys        
                 except:
                     print("Error")    
 
@@ -184,10 +184,12 @@ def encontrar(opcion):
                             #print("MIN DE",min_max[1],"=",min(valores))
                             mini=[[min_max[1],min(valores)]]
                             print(tabulate(mini, headers=['CAMPO','MINIMO'], tablefmt="fancy_grid" ))
+                            L_Reporte = mini
                         elif min_max[0].lower()=='max':
                             print("MAX DE",min_max[1],"=",max(valores))
                             maxi=[[min_max[1],min(valores)]]
                             print(tabulate(maxi, headers=['CAMPO','MAXIMO'], tablefmt="fancy_grid" ))
+                            L_Reporte = maxi
                     except:
                         print(min_max[1], "no encontrado")        
                 except:
@@ -223,7 +225,7 @@ def encontrar(opcion):
                             salida.append([at, resultado])
                     
                     print(tabulate(salida, headers=['CAMPO', 'SUMA'], tablefmt="fancy_grid"))
-                                
+                    L_Reporte = salida
                                 
             
                 
@@ -247,38 +249,40 @@ def encontrar(opcion):
                         if (c in dic):
                             cuenta=cuenta+1
                         
-                    salida.append([c,cuenta])                
+                    salida.append([c,cuenta])
+                                    
                     
                 
                 print(tabulate(salida, headers=['CAMPO', 'CUENTA'], tablefmt="fancy_grid"))
+                L_Reporte = salida
                 break
             #--------------------------12. REPORT TOKENS
             #--------------------------10. REPORT TO < id > < comando >  
             elif tmp.lower()=='report':        
                 entra = automatas.report_id(opcion)
-                if 'TOKENS' not in entra:
-                    try:
-                        encontrar(entra[1])
+                
+                try:
+                    encontrar(entra[1]) # ingreso en afd el comando
                         
                         
                         
-                        df= pd.DataFrame(data = L_Reporte)
-                        f = open ("header.txt",'r')
-                        header = f.read()
-                        f.close()
+                    df= pd.DataFrame(data = L_Reporte)#paso la lista de deporte a dateFrame
+                    g = open ("header.txt",'r')
+                    header = g.read()
+                    g.close()
                         
-                        tabla= df.to_html()
-                        footer="""</div>
-                        </body>
-                        </html> """
-                        html = header+titulo(entra[1])+tabla+footer
-                        path = entra[0]+".html"
-                        f=open(path,'wb')
-                        f.write(bytes(html, 'utf-8'))
-                        f.close()
-                        webbrowser.open_new_tab(path)
-                    except:
-                        pass    
+                    tabla= df.to_html() # y el data frame a tabla de html
+                    footer="""</div>
+                    </body>
+                    </html> """
+                    html = header + titulo(entra[1]) + tabla + footer
+                    path = entra[0]+".html" #aquí agrego el nombre del archivo
+                    f=open(path,'wb')
+                    f.write(bytes(html, 'utf-8'))
+                    f.close()
+                    webbrowser.open_new_tab(path)
+                except:
+                    pass    
                 break
             #--------------------------11.SCRIPT < direccion > [, < direccion > ]
             elif tmp.lower()=='script':

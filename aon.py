@@ -6,7 +6,7 @@ atributos=[]
 
 
 def leer(path):
-    try: 
+    try:
         f = open (path,'r')
         cadena = f.read()
         
@@ -118,20 +118,20 @@ def afdAON(path):
                     continue
                 
                 elif re.match(coma, x):
+                    tmp=tmp.replace(' ', '')
                     
-                    if re.search("true", tmp.strip().lower()):
-                        tmp=tmp.replace(' ', '')
+                    if tmp.strip().lower() == 'true':
                         tokens.append(tmp.strip()+" - tkn_BOOLEAN")
                         atributos.append(True)
                         
-                    elif re.search("false", tmp.strip().lower()):
-                        tmp=tmp.replace(' ', '')
+                    elif tmp.strip().lower() == 'false':
                         tokens.append(tmp.strip()+" - tkn_BOOLEAN")
                         atributos.append(False)
                     elif tipo == 1:
-                        tmp=tmp.replace(' ', '')
                         tokens.append(tmp.strip()+" - tkn_INT")
                         atributos.append(float(tmp))
+                    elif tmp.strip().lower() == 'null':
+                        atributos.append('')
                     
                 
                         
@@ -139,13 +139,15 @@ def afdAON(path):
                     tmp = ""
                     estado=2
                 elif re.match(objCierra, x):
-                    if (re.search("true", tmp.strip().lower())):
+                    tmp=tmp.replace(' ', '')
+                    
+                    if tmp.strip().lower() == 'true':
                         tmp=tmp.replace(' ', '')
                         tokens.append(tmp.strip()+" - tkn_BOOLEAN")
                         atributos.append(True)
                         pass
-                    elif re.search("false", tmp.strip().lower()):
-                        tmp=tmp.replace(' ', '')
+                    elif tmp.strip().lower() == 'false':
+                        
                         tokens.append(tmp.strip()+" - tkn_BOOLEAN")
                         atributos.append(False)
                         pass
@@ -153,6 +155,8 @@ def afdAON(path):
                         tmp=tmp.replace(' ', '')
                         tokens.append(tmp.strip()+" - tkn_INT")
                         atributos.append(float(tmp))
+                    elif tmp.strip().lower() == 'null':
+                        atributos.append('')
                         
                     
                         

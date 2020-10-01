@@ -1,5 +1,7 @@
 from tabulate import tabulate
-import re
+from copy import deepcopy
+import regex
+
 
 AND = False
 OR = False
@@ -12,7 +14,7 @@ def array(ListaUsando,atributos,condiciones):
     global XOR 
     
     try:
-        procesar = ListaUsando.copy()
+        procesar = deepcopy(ListaUsando)
         d=procesar[0]
         opuesto=[]
         
@@ -24,7 +26,7 @@ def array(ListaUsando,atributos,condiciones):
             for at in atributos:
                 opuesto.remove(at)
         
-        copia = procesar.copy()
+        copia = deepcopy(procesar)
         for at in opuesto:
             for x in copia:
                 try:
@@ -61,8 +63,16 @@ def array(ListaUsando,atributos,condiciones):
                         if dic.get(condicion[0]) > condicion[2]:
                             tmp.append(copia[index])
                     elif condicion[1]=='regex':
-                        if re.match(condicion[2], dic.get(condicion[0])):
+                        bandera = regex.match(condicion[2], dic.get(condicion[0]))
+                        if bandera:
                             tmp.append(copia[index])
+                        else:
+                            continue
+                                
+                            
+                            
+                            
+                            
                 except:
                     pass            
             #print(tabulate(tmp, headers="keys", showindex=True, tablefmt="fancy_grid"))    
@@ -71,10 +81,19 @@ def array(ListaUsando,atributos,condiciones):
             
             
         if XOR == True:
-            for a in doble[0]:
-                for b in doble[1]:
-                    if a != b:
-                        imprimir.append(b)
+            if len(doble[1])==0:
+                imprimir = doble[0].copy()
+            elif len(doble[0])==0:
+                imprimir = doble[1].copy()
+            else:
+            
+                for dic in doble[0]:
+                    if dic not in doble[1]:
+                        imprimir.append(dic)
+                        
+                for d in doble[1]:
+                    if d not in doble[0]:
+                        imprimir.append(d)
                 
             XOR = False
         elif AND == True:
@@ -103,9 +122,13 @@ def array(ListaUsando,atributos,condiciones):
     except:
         print("Error")
         
+
 lista = [   {'precio':15.45,'activo':True, 'nombre':'alomate'},
-            {'precio':12.00,'activo':True, 'nombre':'Omate'},
+            {'precio':float(12.0),'activo':True, 'nombre':'Omate'},
             {'precio':1.0,'activo':True, 'nombre':'A'},
             {'precio':15.8,'activo':False, 'nombre':'Tomate'}]
-#OR=True        
-#array(lista,[],[['nombre','regex',"[^a|^b|^O]"],['precio','>',1.0]])        
+
+#print(array(lista,[],[['edad', '>',11]]))      
+
+
+
