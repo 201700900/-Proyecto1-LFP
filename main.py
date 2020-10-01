@@ -1,0 +1,3 @@
+import comandos
+
+comandos.entrada()

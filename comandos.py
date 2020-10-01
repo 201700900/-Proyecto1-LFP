@@ -311,4 +311,3 @@ def encontrar(opcion):
 #print(tabulate(aon.adfAON(entrada()), headers="keys", showindex=True, tablefmt="fancy_grid"))
 #print(aon.adfAON(entrada()))
 
-entrada()
